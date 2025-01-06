@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>User Register Page</title>
+    <link href="Login.css?v=1.0" rel="stylesheet" />
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+
+    <nav>
+     
+        <a href="./index.html">Home Page</a>
+
+    </nav> 
+
+    <script>
+
+
+        $(document).ready(function () {
+            $("#f2").on("submit", function (e) {
+                e.preventDefault();
+
+                let LoginData = {
+                    "email": $("#Email").val(),
+                    "password": $("#Password").val(),
+                };
+
+                ajaxCall("POST",
+                    `https://proj.ruppin.ac.il/igroup1/test2/tar1/api/Users/LoginUser?Email=${LoginData.email}&Password=${LoginData.password}`,
+                    JSON.stringify(LoginData),
+                    LoginSCB,
+                    postECB
+                );
+            });
+        });
+
+        function LoginSCB(response) {
+            console.log(response);
+            console.log(response.id); 
+            console.log(response.name); 
+
+            if (response.id > 0) {
+                swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Login successfully!'
+                }).then(() => {
+                    localStorage.setItem("UserName", response.name|| "Guest");  
+                    localStorage.setItem("UserID", response.id);
+                    window.location.href = "https://proj.ruppin.ac.il/igroup1/test2/tar3/pages/index.html";
+                });
+            } else {
+                swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Invalid email or password!'
+                });
+            }
+        }
+
+        function postECB(err) {
+            console.error(err);
+            swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An unexpected error occurred.'
+            });
+        }
+
+
+
+
+        $("#Password").on("input", function () {
+            var pattern = $(this).attr("pattern");
+            var value = $(this).val();
+            var message = "Please match the requested format: ONLY UPPERCASE AND NUMBERS";
+            if (!pattern.test(value)) {
+                this.setCustomValidity(message);
+            } else {
+                this.setCustomValidity("");
+            }
+        });
+
+    </script>
+
+    <form id="f2">
+        <h1>Login User:</h1>
+        <table>
+            <tr>
+                <td>Email:</td>
+                <td><input type="email" id="Email" required /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" id="Password" required pattern="^[A-Z0-9]+$" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="submit" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

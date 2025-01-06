@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Insert all Games</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../Scripts/game.js"></script>
+    <script src="../Scripts/insertScript.js"></script>
+
+    <style>
+        .fancy-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .fancy-button:hover {
+                transform: translate(-50%, -50%) scale(1.05);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+                background: linear-gradient(45deg, #7c3aed, #db2777);
+            }
+
+            .fancy-button:active {
+                transform: translate(-50%, -50%) scale(0.95);
+            }
+
+            .fancy-button:focus {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.5);
+            }
+    
+    </style>
+</head>
+<body>
+    <button class="fancy-button" id="insertBTN">Click To insert All Games</button>
+</body>
+</html>

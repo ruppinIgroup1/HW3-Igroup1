@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>My Games</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <link href="MyGames.css" rel="stylesheet" />
+</head>
+
+<body>
+    <a href="./index.html">Home Page</a>
+
+    <script>
+
+
+        function GetByRankScore(UserID, ScoreRank) {
+            ajaxCall("GET", `https://proj.ruppin.ac.il/igroup1/test2/tar1/api/Games/searchByScore/UserID/${UserID}/minScoreRank/${ScoreRank}`, "", GetByRankScoreSCB, GetByRankScoreECB);
+            
+        }
+
+        function GetByRankScoreSCB(gamesList) {
+            const gameListDiv = $("#gameList");
+            gameListDiv.empty();
+
+            if (gamesList.length > 0) {
+                gamesList.forEach(game => {
+                    const gameDiv = $(`<div class="game">
+                            <h3>${game.name}</h3>
+                            <p>Price: $${game.price}</p>
+                            <p>Description: ${game.description}</p>
+                            <p>Rank Score: ${game.Score_rank}</p>
+                        </div>
+                    `);
+                    gameListDiv.append(gameDiv);
+                });
+            } else {
+                gameListDiv.append('<p>No games found above the specified RanK Score.</p>');
+            }
+        }
+
+
+        function GetByRankScoreECB(error) {
+            console.log(error);
+        }
+
+
+
+        function GetByPrice(UserID, price) {
+            ajaxCall("GET", `https://proj.ruppin.ac.il/igroup1/test2/tar1/api/Games/GetByPrice?UserID=${UserID}&price=${price}`, "", GetByPriceSCB, GetByPriceECB);
+        }
+
+        function GetByPriceSCB(gamesList) {
+            const gameListDiv = $("#gameList");
+            gameListDiv.empty();
+
+            if (gamesList.length > 0) {
+                gamesList.forEach(game => {
+                    const gameDiv = $(`<div class="game">
+                            <h3>${game.name}</h3>
+                            <p>Price: $${game.price}</p>
+                            <p>Description: ${game.description}</p>
+                            <p>Rank Score: ${game.Score_rank}</p>
+                        </div>
+                    `);
+                    gameListDiv.append(gameDiv);
+                });
+            } else {
+                gameListDiv.append('<p>No games found above the specified price.</p>');
+            }
+        }
+
+
+        function GetByPriceECB(error) {
+            console.log(error);
+        }
+
+
+        function getFromServer(api) {
+            ajaxCall("GET", api, "", getSCB, getECB);
+        }
+
+        function getSCB(gamesList) {
+            const gameListDiv = $("#gameList");
+
+            if (gamesList.length > 0) {
+                gamesList.forEach(game => {
+                    const gameDiv = $(` <div class="game">
+                           <h3>Name: ${game.name}</h3>
+                           <P> AppID: ${game.appID} </p>
+                           <p>Price:${game.price}</p>
+                           <p>Description: ${game.description}</p>
+                           <p>Rank Score: ${game.Score_rank}</p>
+                           <button onclick="DeleteByID(${localStorage.getItem("UserID")},${game.appID})" id="${game.appID}">DELETE</button></div>`);
+                    gameListDiv.append(gameDiv);
+                });
+            }
+            else {
+                gameListDiv.append('<p>No games available at the moment.</p>');
+            }
+        }
+
+        $(document).ready(function () {
+            const userId = localStorage.getItem("UserID");
+            const api = `https://proj.ruppin.ac.il/igroup1/test2/tar1/api/Games?UserID=${userId}`;
+            getFromServer(api)
+        });
+
+
+
+        function getECB(err) {
+            console.log(err);
+        }
+
+        function DeleteByID(ID, AppID) {
+           
+            console.log(ID);
+            console.log(AppID);
+          
+            ajaxCall("DELETE", `https://proj.ruppin.ac.il/igroup1/test2/tar1/api/Games/DeleteByID?${ID}&AppID=${AppID}`, "", deleteSCB, deleteECB);
+            const gameListDiv = $("#gameList");
+            gameListDiv.empty();
+            const api = `https://proj.ruppin.ac.il/igroup1/test2/tar1/api/Games?UserID=${ID}`;
+            location.reload();
+            getFromServer(api);
+        }
+
+        function deleteSCB(response) {
+            console.log(response);
+        }
+
+        function deleteECB(error) {
+            console.log(error);
+        }
+
+
+       
+
+
+
+    </script>
+    <div id="container">
+        <h1>Steam Games Explorer</h1>
+        <div id="gameList"></div>
+
+        <table>
+            <tr>
+                <td>Filter by Price: </td>
+                <td><input type="text" id="PriceInput" /></td>
+                <td><button id="PriceBTN" onclick="GetByPrice(localStorage.getItem('UserID'), document.getElementById('PriceInput').value)">Search</button></td>
+            </tr>
+            <tr>
+                <td>Filter by Score:</td>
+                <td><input type="number" id="ScoreRankInput" /></td>
+                <td>
+                    <button id="ScoreRankBTN" onclick="GetByRankScore(localStorage.getItem('UserID'), document.getElementById('ScoreRankInput').value)">Search</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

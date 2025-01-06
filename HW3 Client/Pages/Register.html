@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>User Register Page</title>
+    <link href="./Register.css?v=1.0" rel="stylesheet" />
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+
+    <nav>
+        <a href="./index.html">Home Page</a>
+      
+    </nav>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#f1").on("submit", function (e) {
+                e.preventDefault();
+                let NewUser = {
+                    "name": $("#Name1").val(),
+                    "email": $("#Email1").val(),
+                    "password": $("#Password1").val(),
+                };
+
+                console.log(NewUser);
+                ajaxCall("POST",
+                    `https://proj.ruppin.ac.il/igroup1/test2/tar1/api/Users/AddNewUser?Name=${NewUser.name}&Email=${NewUser.email}&Password=${NewUser.password}`,
+                    JSON.stringify(NewUser),
+                    RegisterSCB,
+                    postECB);
+            });
+        });
+
+
+        function RegisterSCB(response) {
+            console.log(response);
+            if (typeof response === 'undefined') {
+                swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'There is already a user with these details!'
+                });
+            }
+            else {
+                swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Form submitted successfully!'
+                }).then(() => {
+                    localStorage.setItem("UserName", response.name || "Guest");
+                    localStorage.setItem("UserID", response.id);
+                    window.location.href = "https://proj.ruppin.ac.il/igroup1/test2/tar3/pages/index.html";
+                });
+                    
+            }
+        }
+        
+        function postECB(err) { 
+            console.log(err);
+                swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Invalid response received. Please try again!'
+                });
+        }
+            
+       
+
+
+        function postECB(err) {
+            console.log(err);
+        }
+
+
+        $("#Password1").on("input", function () {
+            var pattern = $(this).attr("pattern");
+            var value = $(this).val();
+            var message = "Please match the requested format: ONLY UPPERCASE AND NUMBERS";
+            if (!pattern.test(value)) {
+                this.setCustomValidity(message);
+            } else {
+                this.setCustomValidity("");
+            }
+        });
+
+    </script>
+
+    <form id="f1">
+        <h1>Register User:</h1>
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td><input type="text" id="Name1" required /></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input type="email" id="Email1" required /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" id="Password1" required pattern="^[A-Z0-9]+$" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="submit" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

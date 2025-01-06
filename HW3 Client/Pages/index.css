@@ -1,0 +1,132 @@
+﻿body {
+    font-family: Arial;
+    background-color: #1e293b; 
+    color: white; 
+    margin: 0;
+    padding: 0;
+}
+nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2d3748;
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+nav a, nav button {
+    display: inline-block;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+    nav a:hover, nav button:hover {
+        background-color: #0056b3;
+    }
+
+#user-greeting {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+    align-content: center;
+    margin-left: auto;
+}
+
+
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+#games {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.game {
+    background-color: #2d3748; 
+    border-radius: 5px;
+    width: 350px; 
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s;
+}
+
+.game:hover {
+        transform: translateY(-10px); 
+        box-shadow: 0 15px 16px rgba(0, 0, 0, 0.7); 
+    }
+
+    .game img {
+        width: 95%;
+        height: 200px;
+        display: block;
+        margin: 20px 0 10px 10px;
+        border-radius: 3px;
+    }
+
+    .game h3 {
+        margin: 5px 10px;
+        font-size: 1.2em;
+        color: #63b3ed; 
+    }
+
+    .game span {
+        margin: 5px 10px;
+        font-size: 0.9em;
+        color: #63b3ed;
+    }
+
+    .game p {
+        margin: 5px 10px;
+        font-size: 0.9em;
+        color: #e2e8f0; 
+    }
+
+#price {
+    font-weight: bold;
+    color: #48bb78; 
+}
+
+.AddToList {
+    margin: 10px auto 20px;
+    display: block;
+    background-color: #3182ce;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+ .AddToList:hover {
+        background-color: #2b6cb0;
+    }

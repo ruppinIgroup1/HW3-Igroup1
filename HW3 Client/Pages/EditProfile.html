@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Edir Profile</title>
+    <link href="EditProfile.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<script>
+
+
+    $(document).ready(function () {
+        $("#EditProfile").on("submit", function (e) {
+            e.preventDefault();
+
+            let userData = {
+                "UserID": localStorage.getItem("UserID"),
+                "Email": $("#Email").val(),
+                "Password": $("#Password").val(),
+                "Name": $("#UserName").val()
+            };
+          
+            ajaxCall("PUT", `https://proj.ruppin.ac.il/igroup1/test2/tar1/api/Users/updateUser/${userData.UserID}`, JSON.stringify(userData), postSCBF, postECBF);
+            localStorage.setItem("UserName", userData.Name);
+        });
+
+        
+    });
+
+    function postSCBF(result) {
+        swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Profile updated successfully!'
+        });
+        console.log(result);
+    }
+
+    function postECBF(err) {
+        swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'An unexpected error occurred.'
+        });
+        console.log(err);
+    }
+
+
+
+</script>
+<body>
+    <nav>
+        <a href="./index.html">Home Page</a>
+    </nav>
+    
+
+    <form id="EditProfile">
+        <h1>Edit Profile:</h1>
+        <table>
+            <tr>
+                <td>User Name:</td>
+                <td><input type="UserName" id="UserName" required /></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input type="email" id="Email" required /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" id="Password" required pattern="^[A-Z0-9]+$" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="submit" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
